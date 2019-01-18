@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<head>
+    <title> Raining  </title>
+    <meta charset="UTF-8"/>
+    <style>
+        canvas{
+            background-color : darkblue;
+            margin          : 0 auto;
+            display         : block;
+        }
+        iframe {
+            top : 0px;
+            left : 0;
+            width: 0%;
+            height: 0%;
+        }
+    </style>
+</head>
+
+<body>
+    <canvas id="rain_Area" width="800" height="800"> Your browser doesn't support the HTML5 Canvas </canvas>
+    <iframe src="https://www.nhaccuatui.com/mh/auto/b045zsGML4gQ" allow="autoplay"></iframe>
+    <script type="text/javascript">
+        var c = document.getElementById("rain_Area");
+        var cxt = c.getContext("2d");
+        c.style.backgroundColor = "darkblue";
+        
+        var fireball = {
+            x : c.width / 2,
+            y : 0,
+            Width : 1.5,
+            Height : 10,
+            speed : 5,
+            _Draw(){
+                cxt.beginPath();
+                cxt.fillStyle = "white";
+                cxt.fillRect(this.x, this.y, this.Width, this.Height);                
+                this.y += this.speed;
+                if (this.y >= c.height) {this.y = -1 * (Math.random() * 100 % 10) ;}
+            }
+        }
+        var rain = [];
+        function createRain(numOfballs){
+            for (var i = 0; i < numOfballs; i++)
+            {
+                var obj = Object.create(fireball);
+                obj.x = Math.random() * 1000 % c.width;
+                obj.y = -1 * (Math.random() * 100 % 10);
+                obj.Height = Math.random() * 100 % 10;
+                obj.Width = obj.Height / fireball.Height * fireball.Width;
+                obj.speed = Math.random() * 100 % 7;
+                if (obj.speed <= 3) obj.speed++;
+                rain.push(obj);
+            }
+        }
+        createRain(1500);
+        function draw(){
+            cxt.clearRect(0, 0, c.width, c.height)
+            fireball._Draw();
+            for ( var i = 0; i < rain.length; i++)
+            {
+                rain[i]._Draw();
+            }
+        }
+        setInterval(draw, 10);
+    </script>
+</body>
